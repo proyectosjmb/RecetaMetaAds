@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Receta Meta Ads 2026 - Soy Brillante</title>
 
-  <!-- =========================================================
-       DEPENDENCIAS
-       - React/ReactDOM: UI
-       - Babel: permite JSX directo en navegador (modo demo)
-       - Tailwind: estilos rápidos
-  ========================================================== -->
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:wght@400;600;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- React/ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
@@ -20,18 +23,20 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- =========================================================
-       CONFIG TAILWIND
-       - Tipografías
-       - Animaciones custom (spin lento, bounce lento, fade-in)
-  ========================================================== -->
+  <!-- Tailwind config -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ["Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
-            display: ["Georgia", "serif"],
+            sans: ["Lato", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+            display: ["Playfair Display", "Georgia", "serif"],
+          },
+          colors: {
+            gold: "#ffd700",
+            muted: "#b0b0b0",
+            success: "#4caf50",
+            danger: "#ff5252",
           },
           animation: {
             "spin-slow": "spin 8s linear infinite",
@@ -40,14 +45,8 @@
             "fade-in-up": "fadeInUp 0.8s ease-out forwards",
           },
           keyframes: {
-            fadeIn: {
-              "0%": { opacity: "0" },
-              "100%": { opacity: "1" },
-            },
-            fadeInUp: {
-              "0%": { opacity: "0", transform: "translateY(20px)" },
-              "100%": { opacity: "1", transform: "translateY(0)" },
-            },
+            fadeIn: { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
+            fadeInUp: { "0%": { opacity: "0", transform: "translateY(20px)" }, "100%": { opacity: "1", transform: "translateY(0)" } },
           },
         },
       },
@@ -55,24 +54,164 @@
   </script>
 
   <style>
-    /* Estilos base */
-    body { margin: 0; padding: 0; }
-    .font-display { font-family: "Georgia", serif; }
+    :root{
+      --bg-dark: #0f0c29;
+      --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      --gold: #ffd700;
+      --glass-bg: rgba(255, 255, 255, 0.10);
+      --glass-border: rgba(255, 255, 255, 0.20);
+      --text-white: #f0f0f0;
+      --text-muted: #b0b0b0;
+      --success: #4caf50;
+      --danger: #ff5252;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Lato', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-display { font-family: "Playfair Display", serif; }
+
+    /* Glass utilities */
+    .glass{
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+    }
+    .glass-strong{
+      background: rgba(15, 12, 41, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.45);
+    }
+
+    /* Gold lines */
+    .gold-line{
+      border: 0;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.55;
+    }
+    .gold-line.center{
+      width: 60%;
+      margin: 18px auto 0;
+      opacity: 0.65;
+    }
+    .gold-line.full{
+      width: 100%;
+      margin: 0;
+      opacity: 0.22;
+    }
+
+    .gold-grad{
+      background: linear-gradient(45deg, var(--gold), #ffecb3);
+    }
+
+    /* BOTÓN DORADO REAL */
+    .btn-gold{
+      background: linear-gradient(45deg, var(--gold), #ffecb3);
+      color: #2a2a2a;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 18px rgba(255,215,0,0.38);
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      user-select: none;
+    }
+    .btn-gold:hover{
+      filter: brightness(1.03);
+      box-shadow: 0 0 22px rgba(255,215,0,0.50);
+      transform: translateY(-1px);
+    }
+    .btn-gold:active{
+      transform: translateY(0) scale(0.99);
+      box-shadow: 0 0 14px rgba(255,215,0,0.35);
+    }
+    .btn-gold:disabled{
+      opacity: .55;
+      filter: none;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* BADGE DORADO (metallic) */
+    .badge-gold{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #1f1f1f;
+      background: linear-gradient(45deg, var(--gold), #ffecb3);
+      box-shadow: 0 0 14px rgba(255,215,0,0.28);
+      border: 1px solid rgba(255,255,255,0.25);
+      white-space: nowrap;
+    }
+
+    /* PROGRESS SHINE (reflejo metálico) */
+    .progress-wrap{
+      position: relative;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+    .progress-fill{
+      position: relative;
+      height: 100%;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-shine{
+      position: absolute;
+      top: 0;
+      left: -40%;
+      height: 100%;
+      width: 35%;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.22) 35%,
+        rgba(255,255,255,0.06) 70%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: skewX(-18deg);
+      animation: shine 2.2s ease-in-out infinite;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    @keyframes shine{
+      0% { left: -45%; opacity: 0.25; }
+      35% { opacity: 0.40; }
+      100% { left: 120%; opacity: 0.18; }
+    }
+
+    textarea::placeholder{ color: var(--text-muted); opacity: .85; }
   </style>
 </head>
 
 <body>
-  <!-- Root donde React monta la app -->
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
 
-    /* =========================================================
-       ICONOS SVG (sin librerías externas)
-       - IconBase: wrapper común
-       - Iconos: componentes pequeños reusables
-    ========================================================== */
+    /* ICONOS */
     const IconBase = ({ children, className, ...props }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -187,20 +326,13 @@
       </IconBase>
     );
 
-    /* =========================================================
-       DATOS (ETAPAS Y TAREAS)
-       - Cada etapa tiene:
-         id, title, subtitle, icon, color, tasks[]
-       - Cada task tiene:
-         id, text
-    ========================================================== */
+    /* DATOS */
     const STEPS = [
       {
         id: "mise-en-place",
         title: "Mise en place",
         subtitle: "Ingredientes antes de prender la estufa",
-        icon: <Utensils className="w-6 h-6 text-orange-500" />,
-        color: "bg-orange-100 border-orange-200 text-orange-800",
+        icon: <Utensils className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "m1", text: "Acceso Admin al Business Portfolio de Aurana" },
           { id: "m2", text: "Acceso Admin a Shopify de Soy Brillante" },
@@ -212,8 +344,7 @@
         id: "step-1",
         title: "Paso 1: Lava Manos",
         subtitle: "Seguridad y control (10 min)",
-        icon: <ShieldCheck className="w-6 h-6 text-blue-500" />,
-        color: "bg-blue-50 border-blue-200 text-blue-800",
+        icon: <ShieldCheck className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s1-1", text: "Activa 2FA en tu perfil y admins" },
           { id: "s1-2", text: "Agrega un 2do admin de respaldo" },
@@ -224,8 +355,7 @@
         id: "step-2",
         title: "Paso 2: Apaga el Incendio",
         subtitle: "Liquida la deuda (5-10 min)",
-        icon: <Flame className="w-6 h-6 text-red-500" />,
-        color: "bg-red-50 border-red-200 text-red-800",
+        icon: <Flame className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s2-1", text: "Ir a Billing & Payments en Meta" },
           { id: "s2-2", text: "Liquidar balance de Aurana ($300 USD)" },
@@ -236,8 +366,7 @@
         id: "step-3",
         title: "Paso 3: Base Nueva",
         subtitle: "Crea assets limpios (15-25 min)",
-        icon: <LayoutGrid className="w-6 h-6 text-purple-500" />,
-        color: "bg-purple-50 border-purple-200 text-purple-800",
+        icon: <LayoutGrid className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s3-1", text: 'Crear Ad Account: "SB - Ads - 2026"' },
           { id: "s3-2", text: "Configurar Moneda y Zona Horaria correctamente" },
@@ -249,8 +378,7 @@
         id: "step-4",
         title: "Paso 4: Conexión Perfecta",
         subtitle: "Shopify + Meta (20-40 min)",
-        icon: <LinkIcon className="w-6 h-6 text-green-500" />,
-        color: "bg-green-50 border-green-200 text-green-800",
+        icon: <LinkIcon className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s4-1", text: 'Instalar canal "Facebook & Instagram" en Shopify' },
           { id: "s4-2", text: 'Conectar al Ad Account y Pixel "2026"' },
@@ -262,8 +390,7 @@
         id: "step-5",
         title: "Paso 5: Control Sanitario",
         subtitle: "Dominios y Permisos (15-30 min)",
-        icon: <Globe className="w-6 h-6 text-cyan-500" />,
-        color: "bg-cyan-50 border-cyan-200 text-cyan-800",
+        icon: <Globe className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s5-1", text: "Verificar dominio soybrillantemx.com en Meta" },
           { id: "s5-2", text: "Configurar Traffic Permissions (Allow list) en Pixel" },
@@ -273,8 +400,7 @@
         id: "step-6",
         title: "Paso 6: Prueba de Sabor",
         subtitle: "Test de eventos final (10-15 min)",
-        icon: <TestTube2 className="w-6 h-6 text-pink-500" />,
-        color: "bg-pink-50 border-pink-200 text-pink-800",
+        icon: <TestTube2 className="w-6 h-6 text-gold" />,
         tasks: [
           { id: "s6-1", text: "Abrir Test Events en Events Manager" },
           { id: "s6-2", text: "Simular compra en modo incógnito" },
@@ -283,63 +409,39 @@
       },
     ];
 
-    /* =========================================================
-       CLAVES DE LOCALSTORAGE
-       - progress: arreglo de taskIds marcadas como completadas
-       - notes: objeto { [taskId]: "texto..." }
-    ========================================================== */
     const LS_PROGRESS_KEY = "meta-recipe-progress";
     const LS_NOTES_KEY = "meta-recipe-notes";
 
-    /* =========================================================
-       COMPONENTE PRINCIPAL
-       - Maneja:
-         1) Progreso (checklist)
-         2) Notas por tarea (textarea)
-         3) Expansión por etapa (accordion)
-         4) Persistencia en localStorage
-    ========================================================== */
     function CookingApp() {
-      // Progreso: lista de taskIds completadas
       const [completed, setCompleted] = useState(() => {
         try {
           const saved = localStorage.getItem(LS_PROGRESS_KEY);
           return saved ? JSON.parse(saved) : [];
-        } catch (e) {
-          return [];
-        }
+        } catch (e) { return []; }
       });
 
-      // Notas: { [taskId]: "..." }
       const [notes, setNotes] = useState(() => {
         try {
           const saved = localStorage.getItem(LS_NOTES_KEY);
           return saved ? JSON.parse(saved) : {};
-        } catch (e) {
-          return {};
-        }
+        } catch (e) { return {}; }
       });
 
-      // Qué etapa está expandida
       const [expandedStep, setExpandedStep] = useState(STEPS[0].id);
-
-      // Confetti “conceptual” (aquí solo activa el badge final)
       const [showConfetti, setShowConfetti] = useState(false);
 
-      // Total de tareas (para porcentaje)
       const totalTasks = useMemo(
         () => STEPS.reduce((acc, step) => acc + step.tasks.length, 0),
         []
       );
 
-      // Porcentaje de avance
       const progressPercentage = Math.round((completed.length / totalTasks) * 100);
 
-      /* =========================================================
-         Persistencia:
-         - Cada cambio en completed => guarda progress
-         - Cada cambio en notes => guarda notes
-      ========================================================== */
+      const totalMainSteps = useMemo(
+        () => STEPS.filter(s => s.id.startsWith("step-")).length,
+        []
+      );
+
       useEffect(() => {
         localStorage.setItem(LS_PROGRESS_KEY, JSON.stringify(completed));
       }, [completed]);
@@ -348,39 +450,19 @@
         localStorage.setItem(LS_NOTES_KEY, JSON.stringify(notes));
       }, [notes]);
 
-      /* =========================================================
-         Toggle checklist
-         - Marca/desmarca una tarea
-         - Si completas todas => showConfetti=true
-      ========================================================== */
       const toggleTask = (taskId) => {
         setCompleted((prev) => {
-          if (prev.includes(taskId)) {
-            return prev.filter((id) => id !== taskId);
-          } else {
-            const newCompleted = [...prev, taskId];
-            if (newCompleted.length === totalTasks) {
-              setShowConfetti(true);
-            }
-            return newCompleted;
-          }
+          if (prev.includes(taskId)) return prev.filter((id) => id !== taskId);
+          const next = [...prev, taskId];
+          if (next.length === totalTasks) setShowConfetti(true);
+          return next;
         });
       };
 
-      /* =========================================================
-         Notas por tarea (histórico)
-         - Actualiza notes[taskId] en tiempo real
-      ========================================================== */
       const updateNote = (taskId, value) => {
-        setNotes((prev) => ({
-          ...prev,
-          [taskId]: value,
-        }));
+        setNotes((prev) => ({ ...prev, [taskId]: value }));
       };
 
-      /* =========================================================
-         “Etapa de cocción” según porcentaje
-      ========================================================== */
       const getCookingStage = () => {
         if (progressPercentage === 0) return { emoji: "🥣", text: "Olla Vacía", desc: "¡A juntar ingredientes!" };
         if (progressPercentage < 20) return { emoji: "🔪", text: "Picando", desc: "Mise en place listo..." };
@@ -392,10 +474,6 @@
       };
 
       const stage = getCookingStage();
-
-      /* =========================================================
-         Helpers UI
-      ========================================================== */
       const isStepComplete = (step) => step.tasks.every((t) => completed.includes(t.id));
 
       const resetAll = () => {
@@ -406,233 +484,277 @@
         setShowConfetti(false);
       };
 
+      const goNextStep = () => {
+        const idx = STEPS.findIndex(s => s.id === expandedStep);
+        const nextIdx = Math.min(idx + 1, STEPS.length - 1);
+        const nextId = STEPS[nextIdx].id;
+        setExpandedStep(nextId);
+
+        requestAnimationFrame(() => {
+          const el = document.getElementById(`step-${nextId}`);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      };
+
+      // Badge por etapa
+      const getBadgeLabel = (step) => {
+        if (step.id === "mise-en-place") return "Preparación";
+        const m = step.id.match(/^step-(\d+)$/);
+        if (m) return `Paso ${m[1]} de ${totalMainSteps}`;
+        return "Etapa";
+      };
+
       return (
-        <div className="min-h-screen font-sans text-gray-800 pb-20 relative">
-          {/* =====================================================
-              FONDO FIJO
-              - Imagen + overlay blanco semi-transparente
-          ====================================================== */}
-          <div className="fixed inset-0 z-[-1]">
-            <img
-              src="https://images.unsplash.com/photo-1574629173115-01ba95c5c089?q=80&w=1920&auto=format&fit=crop"
-              alt="Cena Navideña Elegante"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px]"></div>
+        <div className="min-h-screen font-sans pb-20 relative">
+          {/* HEADER sticky */}
+          <div className="sticky top-0 z-50 glass-strong">
+            <div className="max-w-3xl mx-auto px-4 py-3">
+              <div className="flex items-center justify-between mb-2">
+                <h1 className="text-xl font-display font-bold text-gold flex items-center gap-2">
+                  <ChefHat className="w-6 h-6 text-gold" />
+                  Receta Meta Ads 2026
+                </h1>
+                <span className="font-bold text-[var(--text-muted)]">{progressPercentage}% Listo</span>
+              </div>
+
+              {/* Progress con shine metálico */}
+              <div className="w-full h-4 bg-white/10 rounded-full border border-white/10 progress-wrap">
+                <div
+                  className="progress-fill gold-grad transition-all duration-500 ease-out flex items-center justify-end pr-1"
+                  style={{ width: `${progressPercentage}%` }}
+                >
+                  {progressPercentage > 0 && <div className="progress-shine"></div>}
+                  {progressPercentage > 0 && <div className="w-2 h-full bg-white/20 animate-pulse" />}
+                </div>
+              </div>
+
+              <hr className="gold-line center" />
+            </div>
           </div>
 
-          {/* =====================================================
-              CONTENIDO
-          ====================================================== */}
-          <div className="relative z-10">
-            {/* Header Sticky con progreso */}
-            <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-md border-b-4 border-orange-200">
-              <div className="max-w-3xl mx-auto px-4 py-3">
-                <div className="flex items-center justify-between mb-2">
-                  <h1 className="text-xl font-bold text-orange-600 flex items-center gap-2">
-                    <ChefHat className="w-6 h-6" />
-                    Receta Meta Ads 2026
-                  </h1>
-                  <span className="font-bold text-gray-600">{progressPercentage}% Listo</span>
+          <div className="max-w-3xl mx-auto px-4 py-8 relative z-10">
+            {/* HERO */}
+            <div className="glass rounded-3xl p-8 mb-8 text-center relative overflow-hidden">
+              {progressPercentage === 100 && (
+                <div className="absolute inset-0 pointer-events-none flex justify-center items-center">
+                  <div className="animate-spin-slow text-9xl opacity-15">✨</div>
                 </div>
+              )}
 
-                <div className="w-full h-4 bg-gray-100 rounded-full overflow-hidden border border-gray-200">
-                  <div
-                    className="h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 transition-all duration-500 ease-out flex items-center justify-end pr-1"
-                    style={{ width: `${progressPercentage}%` }}
-                  >
-                    {progressPercentage > 0 && <div className="w-2 h-full bg-white/30 animate-pulse" />}
-                  </div>
-                </div>
+              <div className="text-8xl mb-4 animate-bounce-slow filter drop-shadow-lg">
+                {stage.emoji}
               </div>
+
+              <h2 className="text-3xl font-display font-black text-gold mb-2">
+                {stage.text}
+              </h2>
+              <p className="text-lg text-[var(--text-muted)] font-medium">
+                {stage.desc}
+              </p>
+
+              {/* BOTÓN DORADO REAL */}
+              <div className="mt-6 flex justify-center">
+                <button
+                  className="btn-gold"
+                  onClick={goNextStep}
+                  disabled={expandedStep === STEPS[STEPS.length - 1].id}
+                  title={expandedStep === STEPS[STEPS.length - 1].id ? "Ya estás en la última etapa" : "Ir a la siguiente etapa"}
+                >
+                  Siguiente etapa
+                </button>
+              </div>
+
+              {progressPercentage === 100 && (
+                <div className="mt-6 p-4 rounded-xl animate-fade-in-up"
+                     style={{ background: "rgba(76,175,80,0.18)", border: "1px solid rgba(76,175,80,0.35)" }}>
+                  <p className="font-bold text-xl flex items-center justify-center gap-2 text-white">
+                    <PartyPopper className="w-6 h-6 text-[var(--success)]" /> ¡Felicidades, Chef!
+                  </p>
+                  <p className="text-white/90">Tu infraestructura de anuncios está lista y blindada para 2026.</p>
+                </div>
+              )}
             </div>
 
-            <div className="max-w-3xl mx-auto px-4 py-8">
-              {/* Hero visual */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 mb-8 shadow-xl border-b-8 border-orange-100 text-center transform hover:scale-[1.01] transition-transform duration-300 relative overflow-hidden">
-                {progressPercentage === 100 && (
-                  <div className="absolute inset-0 pointer-events-none flex justify-center items-center">
-                    <div className="animate-spin-slow text-9xl opacity-20">✨</div>
-                  </div>
-                )}
+            {/* ACCORDION */}
+            <div className="space-y-4">
+              {STEPS.map((step) => {
+                const isComplete = isStepComplete(step);
+                const isOpen = expandedStep === step.id;
+                const completedCount = step.tasks.filter((t) => completed.includes(t.id)).length;
 
-                <div className="text-8xl mb-4 animate-bounce-slow filter drop-shadow-lg">
-                  {stage.emoji}
-                </div>
-                <h2 className="text-3xl font-black text-gray-800 mb-2 font-display">{stage.text}</h2>
-                <p className="text-lg text-gray-500 font-medium">{stage.desc}</p>
-
-                {progressPercentage === 100 && (
-                  <div className="mt-6 p-4 bg-green-100 rounded-xl text-green-800 animate-fade-in-up">
-                    <p className="font-bold text-xl flex items-center justify-center gap-2">
-                      <PartyPopper /> ¡Felicidades, Chef!
-                    </p>
-                    <p>Tu infraestructura de anuncios está lista y blindada para 2026.</p>
-                  </div>
-                )}
-              </div>
-
-              {/* =====================================================
-                  LISTA DE ETAPAS (Accordion)
-              ====================================================== */}
-              <div className="space-y-4">
-                {STEPS.map((step) => {
-                  const isComplete = isStepComplete(step);
-                  const isOpen = expandedStep === step.id;
-                  const completedCount = step.tasks.filter((t) => completed.includes(t.id)).length;
-
-                  return (
-                    <div
-                      key={step.id}
+                return (
+                  <div
+                    key={step.id}
+                    id={`step-${step.id}`}
+                    className={`
+                      glass rounded-2xl overflow-hidden transition-all duration-300
+                      ${isComplete ? "opacity-90" : ""}
+                      ${isOpen ? "ring-4 ring-gold/20" : ""}
+                    `}
+                    style={{
+                      borderColor: isComplete ? "rgba(76,175,80,0.45)" : "rgba(255,255,255,0.20)"
+                    }}
+                  >
+                    {/* Header clickeable */}
+                    <button
+                      onClick={() => setExpandedStep(isOpen ? null : step.id)}
                       className={`
-                        bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-300 border-2
-                        ${isComplete ? "border-green-400 bg-green-50/90 shadow-sm opacity-90" : "border-transparent shadow-lg"}
-                        ${isOpen ? "ring-4 ring-orange-200/50" : ""}
+                        w-full p-5 flex items-center justify-between text-left transition-colors
+                        ${isOpen ? "bg-white/10" : "bg-white/5 hover:bg-white/10"}
                       `}
                     >
-                      {/* Encabezado clickeable */}
-                      <button
-                        onClick={() => setExpandedStep(isOpen ? null : step.id)}
-                        className={`w-full p-5 flex items-center justify-between text-left transition-colors ${step.color} bg-opacity-80 hover:bg-opacity-100`}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`
-                              w-10 h-10 rounded-full flex items-center justify-center bg-white shadow-sm
-                              ${isComplete ? "text-green-500" : ""}
-                            `}
-                          >
-                            {isComplete ? <CheckCircle2 className="w-6 h-6" /> : step.icon}
-                          </div>
-                          <div>
-                            <h3 className={`font-bold text-lg leading-tight ${isComplete ? "line-through decoration-2 decoration-green-500 opacity-60" : ""}`}>
-                              {step.title}
-                            </h3>
-                            <p className="text-sm opacity-80">{step.subtitle}</p>
-                          </div>
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`
+                            w-10 h-10 rounded-full flex items-center justify-center
+                            bg-black/20 border border-white/10
+                            ${isComplete ? "text-[var(--success)]" : "text-gold"}
+                          `}
+                        >
+                          {isComplete ? <CheckCircle2 className="w-6 h-6" /> : step.icon}
                         </div>
 
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs font-bold bg-white/50 px-2 py-1 rounded-lg">
-                            {completedCount}/{step.tasks.length}
-                          </span>
-                          {isOpen ? <ChevronUp className="w-5 h-5 opacity-50" /> : <ChevronDown className="w-5 h-5 opacity-50" />}
+                        <div>
+                          {/* Badge dorado por etapa */}
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="badge-gold">{getBadgeLabel(step)}</span>
+                            {isComplete && (
+                              <span className="text-xs font-bold" style={{ color: "rgba(76,175,80,0.95)" }}>
+                                ✓ Completado
+                              </span>
+                            )}
+                          </div>
+
+                          <h3 className={`font-display font-bold text-lg leading-tight ${isComplete ? "line-through opacity-60" : "text-gold"}`}>
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-[var(--text-muted)]">
+                            {step.subtitle}
+                          </p>
                         </div>
-                      </button>
+                      </div>
 
-                      {/* Contenido desplegable */}
-                      {isOpen && (
-                        <div className="p-4 bg-white/50 animate-fade-in">
-                          <div className="space-y-3">
-                            {step.tasks.map((task) => {
-                              const isChecked = completed.includes(task.id);
-                              const noteValue = notes?.[task.id] ?? "";
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold bg-black/20 px-2 py-1 rounded-lg border border-white/10 text-[var(--text-muted)]">
+                          {completedCount}/{step.tasks.length}
+                        </span>
+                        {isOpen ? <ChevronUp className="w-5 h-5 text-[var(--text-muted)]" /> : <ChevronDown className="w-5 h-5 text-[var(--text-muted)]" />}
+                      </div>
+                    </button>
 
-                              return (
-                                <div
-                                  key={task.id}
-                                  className={`
-                                    p-3 rounded-xl transition-all duration-200 border
-                                    ${isChecked
-                                      ? "bg-gray-50/80 border-gray-100 text-gray-500"
-                                      : "bg-white border-gray-200 hover:border-orange-300 hover:shadow-md"}
-                                  `}
-                                >
-                                  {/* Línea principal: checkbox + texto */}
-                                  <label className="flex items-start gap-3 cursor-pointer">
-                                    <div className="relative flex-shrink-0 mt-0.5">
-                                      <input
-                                        type="checkbox"
-                                        className="peer sr-only"
-                                        checked={isChecked}
-                                        onChange={() => toggleTask(task.id)}
-                                      />
-                                      <div
-                                        className={`
-                                          w-6 h-6 rounded-md border-2 transition-colors flex items-center justify-center
-                                          ${isChecked ? "bg-green-500 border-green-500" : "border-gray-300 bg-white"}
-                                        `}
-                                      >
-                                        {isChecked && <CheckCircle2 className="w-4 h-4 text-white" />}
-                                      </div>
-                                    </div>
+                    {/* SEPARADOR DORADO POR ETAPA */}
+                    <hr className="gold-line full" />
 
-                                    <span className={`text-base select-none transition-all ${isChecked ? "line-through opacity-70" : ""}`}>
-                                      {task.text}
-                                    </span>
-                                  </label>
+                    {/* Contenido */}
+                    {isOpen && (
+                      <div className="p-4 animate-fade-in" style={{ background: "rgba(0,0,0,0.18)" }}>
+                        <div className="px-1 pb-3">
+                          <div className="gold-line full" style={{ opacity: 0.16 }}></div>
+                        </div>
 
-                                  {/* =================================================
-                                      CUADRO DE NOTAS (HISTÓRICO)
-                                      - Uno por cada tarea (paso).
-                                      - Persiste en localStorage.
-                                  ================================================== */}
-                                  <div className="mt-3">
-                                    <div className="flex items-center justify-between mb-1">
-                                      <p className="text-xs font-bold text-gray-600">
-                                        Notas / histórico
-                                      </p>
-                                      <p className="text-[10px] text-gray-400">
-                                        ID: {task.id}
-                                      </p>
-                                    </div>
+                        <div className="space-y-3">
+                          {step.tasks.map((task) => {
+                            const isChecked = completed.includes(task.id);
+                            const noteValue = notes?.[task.id] ?? "";
 
-                                    <textarea
-                                      value={noteValue}
-                                      onChange={(e) => updateNote(task.id, e.target.value)}
-                                      placeholder="Escribe aquí lo que pasó: fecha, screenshots que tomaste, a quién le pediste acceso, qué error salió, qué resolviste, etc."
-                                      className={`
-                                        w-full min-h-[88px] resize-y rounded-xl border px-3 py-2 text-sm
-                                        focus:outline-none focus:ring-2 focus:ring-orange-200
-                                        ${isChecked ? "bg-gray-50 border-gray-200" : "bg-white border-gray-200"}
-                                      `}
+                            return (
+                              <div
+                                key={task.id}
+                                className={`
+                                  p-3 rounded-xl transition-all duration-200 border
+                                  ${isChecked
+                                    ? "bg-black/20 border-white/5 text-[var(--text-muted)]"
+                                    : "bg-black/10 border-white/10 hover:border-gold/40 hover:shadow-md"}
+                                `}
+                              >
+                                <label className="flex items-start gap-3 cursor-pointer">
+                                  <div className="relative flex-shrink-0 mt-0.5">
+                                    <input
+                                      type="checkbox"
+                                      className="peer sr-only"
+                                      checked={isChecked}
+                                      onChange={() => toggleTask(task.id)}
                                     />
+                                    <div
+                                      className={`
+                                        w-6 h-6 rounded-md border-2 transition-colors flex items-center justify-center
+                                        ${isChecked ? "bg-gold border-gold text-black" : "border-white/30 bg-black/10"}
+                                      `}
+                                    >
+                                      {isChecked && <CheckCircle2 className="w-4 h-4" />}
+                                    </div>
                                   </div>
+
+                                  <span className={`text-base select-none transition-all ${isChecked ? "line-through opacity-70" : "text-white"}`}>
+                                    {task.text}
+                                  </span>
+                                </label>
+
+                                <div className="mt-3">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <p className="text-xs font-bold text-[var(--text-muted)]">
+                                      Notas / histórico
+                                    </p>
+                                    <p className="text-[10px] text-white/30">
+                                      ID: {task.id}
+                                    </p>
+                                  </div>
+
+                                  <textarea
+                                    value={noteValue}
+                                    onChange={(e) => updateNote(task.id, e.target.value)}
+                                    placeholder="Escribe aquí lo que pasó: fecha, screenshots que tomaste, a quién le pediste acceso, qué error salió, qué resolviste, etc."
+                                    className={`
+                                      w-full min-h-[88px] resize-y rounded-xl border px-3 py-2 text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-gold/30
+                                      ${isChecked ? "bg-black/25 border-white/10 text-white" : "bg-black/20 border-white/10 text-white"}
+                                    `}
+                                  />
                                 </div>
-                              );
-                            })}
-                          </div>
-
-                          {/* Mensajito de “paso completado” (etapa completa) */}
-                          {completedCount === step.tasks.length && (
-                            <div className="mt-4 text-center text-sm font-bold text-green-600 animate-bounce">
-                              ¡Etapa completada! Sigue así 🔥
-                            </div>
-                          )}
+                              </div>
+                            );
+                          })}
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
 
-              {/* Footer + Reset */}
-              <div className="mt-12 text-center text-gray-500 text-sm pb-8 font-medium">
-                <p className="bg-white/50 inline-block px-4 py-1 rounded-full">
-                  Cocinado con ❤️ por Soy Brillante
-                </p>
-
-                <div className="mt-2">
-                  <button
-                    onClick={() => {
-                      if (confirm("¿Reiniciar toda la receta? (Esto borra progreso y notas)")) {
-                        resetAll();
-                      }
-                    }}
-                    className="text-xs text-red-400 hover:text-red-600 underline bg-white/50 px-2 py-1 rounded"
-                  >
-                    Reiniciar receta
-                  </button>
-                </div>
-              </div>
-
+                        {completedCount === step.tasks.length && (
+                          <div className="mt-4 text-center text-sm font-bold animate-bounce"
+                               style={{ color: "rgba(76,175,80,0.95)" }}>
+                            ¡Etapa completada! Sigue así 🔥
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
+
+            {/* FOOTER */}
+            <div className="mt-12 text-center text-sm pb-8">
+              <p className="glass inline-block px-4 py-2 rounded-full text-[var(--text-muted)]">
+                Cocinado con ❤️ por Soy Brillante
+              </p>
+
+              <div className="mt-3">
+                <button
+                  onClick={() => {
+                    if (confirm("¿Reiniciar toda la receta? (Esto borra progreso y notas)")) {
+                      resetAll();
+                    }
+                  }}
+                  className="text-xs underline px-3 py-2 rounded-full border border-white/10 bg-black/20 hover:border-[var(--danger)] hover:text-[var(--danger)] transition-colors"
+                  style={{ color: "rgba(255,255,255,0.65)" }}
+                >
+                  Reiniciar receta
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       );
     }
 
-    // Montaje de React
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<CookingApp />);
   </script>
