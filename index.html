@@ -504,8 +504,204 @@
         return "Etapa";
       };
 
+      // ==========================
+      // EXPORT / IMPORT (Word .doc)
+      // ==========================
+
+      const buildWordReportHTML = () => {
+        const now = new Date();
+        const stamp = now.toLocaleString("es-MX");
+
+        const backupObj = {
+          version: 1,
+          exportedAt: now.toISOString(),
+          completed,
+          notes,
+        };
+
+        const escapeHtml = (str = "") =>
+          String(str)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+        const percent = Math.round((completed.length / totalTasks) * 100);
+
+        const stepsHtml = STEPS.map((step) => {
+          const doneCount = step.tasks.filter(t => completed.includes(t.id)).length;
+
+          const tasksHtml = step.tasks.map((t) => {
+            const isDone = completed.includes(t.id);
+            const note = notes?.[t.id] ?? "";
+
+            return `
+              <tr>
+                <td style="width:28px; font-weight:700; vertical-align:top; padding-top:6px;">${isDone ? "✓" : "○"}</td>
+                <td style="padding:6px 8px;">
+                  <div style="font-weight:700;">${escapeHtml(t.text)}</div>
+                  <div style="font-size:12px; color:#666; margin-top:4px;"><b>ID:</b> ${escapeHtml(t.id)}</div>
+                  ${
+                    note.trim()
+                      ? `<div style="margin-top:8px; padding:8px; background:#f7f7f7; border:1px solid #eee; border-radius:8px;">
+                          <div style="font-size:12px; color:#333; font-weight:700; margin-bottom:6px;">Notas / histórico</div>
+                          <div style="white-space:pre-wrap; font-size:12.5px; color:#111;">${escapeHtml(note)}</div>
+                        </div>`
+                      : `<div style="margin-top:8px; font-size:12px; color:#999;"><i>Sin notas</i></div>`
+                  }
+                </td>
+              </tr>
+            `;
+          }).join("");
+
+          return `
+            <div style="margin:18px 0 10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <h2 style="margin:0; font-size:18px;">${escapeHtml(step.title)}</h2>
+                <span style="font-size:12px; color:#555;"><b>${doneCount}</b> / ${step.tasks.length}</span>
+              </div>
+              <div style="margin-top:6px; color:#666; font-size:12.5px;">${escapeHtml(step.subtitle)}</div>
+              <div style="height:1px; background:#ffd700; opacity:0.55; margin:10px 0 12px;"></div>
+
+              <table style="width:100%; border-collapse:collapse;">
+                ${tasksHtml}
+              </table>
+            </div>
+          `;
+        }).join("");
+
+        // Embed JSON in comment so we can import from the .doc
+        const embeddedJson = escapeHtml(JSON.stringify(backupObj));
+
+        const html = `
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Backup Receta Meta Ads 2026</title>
+</head>
+<body style="font-family: Arial, sans-serif; color:#111;">
+  <div style="max-width:760px; margin:0 auto;">
+    <h1 style="margin:0; font-size:22px;">Receta Meta Ads 2026 — Respaldo</h1>
+    <div style="margin-top:6px; color:#555; font-size:12.5px;">
+      <b>Fecha:</b> ${escapeHtml(stamp)}<br/>
+      <b>Avance:</b> ${percent}% (${completed.length} / ${totalTasks} tareas)
+    </div>
+
+    <div style="height:1px; background:#ffd700; opacity:0.75; margin:14px 0;"></div>
+
+    ${stepsHtml}
+
+    <div style="margin-top:16px; padding:10px; border:1px solid #eee; border-radius:10px; color:#666; font-size:12px;">
+      Este documento fue exportado desde la herramienta. Contiene un respaldo interno para re-importación.
+    </div>
+  </div>
+
+  <!--META_RECIPE_BACKUP_JSON:${embeddedJson}-->
+</body>
+</html>`;
+
+        return { html, backupObj };
+      };
+
+      const downloadAsWord = () => {
+        const { html } = buildWordReportHTML();
+        const blob = new Blob([html], { type: "application/msword;charset=utf-8" });
+
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, "0");
+        const filename = `Receta-Meta-Ads-2026-Backup-${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}.doc`;
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(a.href);
+      };
+
+      const parseBackupFromDocText = (text) => {
+        const marker = "<!--META_RECIPE_BACKUP_JSON:";
+        const start = text.indexOf(marker);
+        if (start === -1) return null;
+
+        const end = text.indexOf("-->", start);
+        if (end === -1) return null;
+
+        const raw = text.substring(start + marker.length, end);
+
+        const unescapeHtml = (s) => s
+          .replaceAll("&quot;", '"')
+          .replaceAll("&#039;", "'")
+          .replaceAll("&lt;", "<")
+          .replaceAll("&gt;", ">")
+          .replaceAll("&amp;", "&");
+
+        const jsonStr = unescapeHtml(raw).trim();
+        try {
+          return JSON.parse(jsonStr);
+        } catch {
+          return null;
+        }
+      };
+
+      const importBackupFile = async (file) => {
+        if (!file) return;
+        const text = await file.text();
+
+        // JSON puro
+        if (file.name.toLowerCase().endsWith(".json")) {
+          try {
+            const obj = JSON.parse(text);
+            if (!obj || !Array.isArray(obj.completed) || typeof obj.notes !== "object") {
+              alert("El JSON no tiene el formato esperado.");
+              return;
+            }
+            setCompleted(obj.completed);
+            setNotes(obj.notes);
+            alert("✅ Backup importado (JSON).");
+            return;
+          } catch {
+            alert("No se pudo leer el JSON.");
+            return;
+          }
+        }
+
+        // .doc (HTML)
+        const backup = parseBackupFromDocText(text);
+        if (!backup) {
+          alert("No encontré un respaldo dentro de este Word (.doc). Asegúrate de que lo exportaste desde aquí.");
+          return;
+        }
+        if (!Array.isArray(backup.completed) || typeof backup.notes !== "object") {
+          alert("Encontré el respaldo, pero no tiene el formato esperado.");
+          return;
+        }
+
+        setCompleted(backup.completed);
+        setNotes(backup.notes);
+        alert("✅ Backup importado desde Word (.doc)."
+        );
+      };
+
       return (
         <div className="min-h-screen font-sans pb-20 relative">
+
+          {/* Input oculto para importar backup */}
+          <input
+            id="backup-import-input"
+            type="file"
+            accept=".doc,.json"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              importBackupFile(file);
+              e.target.value = "";
+            }}
+          />
+
           {/* HEADER sticky */}
           <div className="sticky top-0 z-50 glass-strong">
             <div className="max-w-3xl mx-auto px-4 py-3">
@@ -734,6 +930,25 @@
               <p className="glass inline-block px-4 py-2 rounded-full text-[var(--text-muted)]">
                 Cocinado con ❤️ por Soy Brillante
               </p>
+
+              {/* Export / Import */}
+              <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  className="btn-gold"
+                  onClick={downloadAsWord}
+                  title="Descarga un documento tipo Word con todas tus notas y tu progreso"
+                >
+                  Exportar a Word
+                </button>
+
+                <button
+                  className="btn-gold"
+                  onClick={() => document.getElementById("backup-import-input")?.click()}
+                  title="Restaura un respaldo (Word exportado desde aquí o JSON)"
+                >
+                  Importar Backup
+                </button>
+              </div>
 
               <div className="mt-3">
                 <button
